@@ -6,8 +6,8 @@ import UserContext from "../contexts/UserContext";
 
 export default function Login(){
     const { setUser,setToken } = useContext(UserContext);
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
     function signIn(event){

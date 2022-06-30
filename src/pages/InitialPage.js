@@ -6,18 +6,10 @@ import axios from "axios";
 import UserContext from "../contexts/UserContext";
 import Content from "../components/Content";
 
-export default function InitalPage(){
+export default function InitialPage(){
     const { user,setUser,token,balance,setBalance,setRecordControl } = useContext(UserContext);
     const [records, setRecords] = useState([]);
     const navigate = useNavigate();
-
-    function changeRecordFalse(){
-        setRecordControl(false);
-    }
-
-    function changeRecordTrue(){
-        setRecordControl(true);
-    }
 
     useEffect(()=>{
         const promise = axios.get("http://localhost:5000/initialpage",
@@ -36,7 +28,7 @@ export default function InitalPage(){
         alert(Error.response.data);
     })
 
-    },[balance]);
+    },[balance,setBalance,token]);
 
     function logOut(){
         setUser();
@@ -54,7 +46,7 @@ export default function InitalPage(){
                     {
                         records.length === 0 ? <h2>Não há registros de entrada ou saída!</h2>
                         :
-                        <Content records={records} setRecords={setRecords}></Content>
+                        <Content setRecordControl={setRecordControl} setBalance={setBalance} records={records} token={token} setRecords={setRecords}></Content>
                     }
                 </div>
                 {
@@ -68,13 +60,13 @@ export default function InitalPage(){
             </Contents>
             <Section>
                 <div>
-                    <Link onClick={changeRecordFalse} to="/add" style={{textDecoration:'none', color:'#ffffff'}}>
+                    <Link onClick={()=>setRecordControl(false)} to="/add" style={{textDecoration:'none', color:'#ffffff'}}>
                         <IoAddCircleOutline  size={22}/>
                     </Link>
                     <h3>Nova entrada</h3>
                 </div>
                 <div>
-                    <Link onClick={changeRecordTrue} to="/add" style={{textDecoration:'none', color:'#ffffff'}}>
+                    <Link onClick={()=>setRecordControl(true)} to="/add" style={{textDecoration:'none', color:'#ffffff'}}>
                         <IoRemoveCircleOutline size={22}/>
                     </Link>
                     <h3>Nova saída</h3>

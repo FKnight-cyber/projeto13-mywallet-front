@@ -29,11 +29,11 @@ export default function AddRegister(){
         promise.then(()=>{
             alert("Record successfully added!");
             navigate("/initialpage");
-        })
+        });
 
         promise.catch(Error => {
             alert(Error.response.data);
-        })
+        });
     }
     
     return(
