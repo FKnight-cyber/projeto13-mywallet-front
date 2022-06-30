@@ -7,25 +7,29 @@ import UserContext from "../contexts/UserContext";
 import Content from "../components/Content";
 
 export default function InitalPage(){
-    const { user,setUser,token,balance,setBalance } = useContext(UserContext);
+    const { user,setUser,token,balance,setBalance,setRecordControl } = useContext(UserContext);
     const [records, setRecords] = useState([]);
     const navigate = useNavigate();
+
+    function changeRecordFalse(){
+        setRecordControl(false);
+    }
+
+    function changeRecordTrue(){
+        setRecordControl(true);
+    }
 
     useEffect(()=>{
         const promise = axios.get("http://localhost:5000/initialpage",
         {
         headers:{
-            user: token
+            Authorization: `Bearer ${token}`
         }
     });
 
     promise.then(res => {
-        let sum = 0;
-        setRecords([...res.data]);
-        records.forEach(record => {
-            sum+=record.price
-        });
-        setBalance(sum)
+        setBalance(res.data.balance)
+        setRecords([...res.data.records]);
     })
 
     promise.catch(Error => {
@@ -64,13 +68,13 @@ export default function InitalPage(){
             </Contents>
             <Section>
                 <div>
-                    <Link to="/add" style={{textDecoration:'none', color:'#ffffff'}}>
-                        <IoAddCircleOutline size={22}/>
+                    <Link onClick={changeRecordFalse} to="/add" style={{textDecoration:'none', color:'#ffffff'}}>
+                        <IoAddCircleOutline  size={22}/>
                     </Link>
                     <h3>Nova entrada</h3>
                 </div>
                 <div>
-                    <Link to="/remove" style={{textDecoration:'none', color:'#ffffff'}}>
+                    <Link onClick={changeRecordTrue} to="/add" style={{textDecoration:'none', color:'#ffffff'}}>
                         <IoRemoveCircleOutline size={22}/>
                     </Link>
                     <h3>Nova saída</h3>

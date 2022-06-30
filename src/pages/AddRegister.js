@@ -9,25 +9,25 @@ export default function AddRegister(){
     const [description,setDescription] = useState();
 
     const navigate = useNavigate();
-    const { token,setBalance,balance } = useContext(UserContext);
+    const { token,setBalance,recordControl } = useContext(UserContext);
 
     function addRecord(event){
         event.preventDefault();
 
         const body = {
+            recordControl,
             price,
             description
         }
 
         const promise = axios.post("http://localhost:5000/add", body, {
             headers:{
-                user: token
+                Authorization: `Bearer ${token}`
             }
         });
 
         promise.then(()=>{
             alert("Record successfully added!");
-            setBalance(balance+price);
             navigate("/initialpage");
         })
 
@@ -38,7 +38,9 @@ export default function AddRegister(){
     
     return(
         <Container>
-            <h1>Nova Entrada</h1>
+            {
+                recordControl ? <h1>Nova Saída</h1> : <h1>Nova Entrada</h1>
+            }
             <form onSubmit={addRecord}>
                 <input type="number"
                 placeholder="Valor"
@@ -51,7 +53,11 @@ export default function AddRegister(){
                 required
                 value={description}
                 onChange={e => setDescription(e.target.value)} />
-                <button type="submit">Salvar Entrada</button>
+                <button type="submit">
+                {
+                recordControl ? <h1>Salvar Saída</h1> : <h1>Salvar Entrada</h1>
+                }
+                </button>
             </form>
         </Container>
     );

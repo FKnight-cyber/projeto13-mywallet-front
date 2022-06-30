@@ -22,7 +22,7 @@ export default function Login(){
         promise.then(res => {
             if(res.data.hasRegister){
                 setUser(res.data.user);
-                setToken(res.data.email)
+                setToken(res.data.token);
                 navigate('/initialpage');
             }
         });
