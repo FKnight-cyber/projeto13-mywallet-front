@@ -103,6 +103,7 @@ const Container = styled.div`
         align-items: center;
 
         h1{
+            font-style: bold;
             font-size: 26px;
             color: #FFFFFF;
         }

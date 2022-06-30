@@ -9,7 +9,7 @@ export default function AddRegister(){
     const [description,setDescription] = useState();
 
     const navigate = useNavigate();
-    const { token,setBalance,recordControl } = useContext(UserContext);
+    const { token,recordControl } = useContext(UserContext);
 
     function addRecord(event){
         event.preventDefault();
@@ -49,7 +49,7 @@ export default function AddRegister(){
                 onChange={e => setPrice(e.target.value)} />
                 <input type="text" 
                 placeholder="Descrição" 
-                maxLength={20}
+                maxLength={30}
                 required
                 value={description}
                 onChange={e => setDescription(e.target.value)} />

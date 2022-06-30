@@ -80,6 +80,7 @@ const Container = styled.div`
     background-color: #8C11BE;
 
     h1{
+        font-family: 'Saira Stencil One', cursive;
         font-size: 32px;
         color: #FFFFFF;
         margin-bottom: 24px;
