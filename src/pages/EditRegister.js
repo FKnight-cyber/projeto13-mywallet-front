@@ -1,13 +1,40 @@
-import { Container } from "./AddRegister";
+import { Container,LoaderContainer } from "./AddRegister";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext,useState } from "react";
+import {Circles} from "react-loader-spinner";
+import { toast,ToastContainer } from "react-toastify";
+
+const notify = (error)=>{
+    toast(`❗ ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
+
+const notify2 = (msg)=>{
+    toast(`✅ ${msg}`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
 
 export default function EditRegister(){
     const [price, setPrice] = useState();
     const [description,setDescription] = useState();
     const { recordControl,token } = useContext(UserContext);
+    const [load,setLoad] = useState(false);
 
     const navigate = useNavigate();
 
@@ -15,6 +42,8 @@ export default function EditRegister(){
 
     function updateRecord(event){
         event.preventDefault();
+
+        setLoad(true);
 
         const body = {
             recordControl,
@@ -29,16 +58,39 @@ export default function EditRegister(){
         });
 
         promise.then(()=>{
-            navigate("/initialpage");
-            alert("Record successfully updated!");
+            notify2("Record successfully updated!");
+            setLoad(false);
+            setTimeout(()=>{
+                navigate("/initialpage");
+            },2000);
         });
 
         promise.catch(Error => {
-            alert(Error.response.data);
+            setLoad(false);
+            notify(Error.response.data.message);
         });
     }
     return(
-        <Container>
+        <>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={true}
+                limit={1}
+            />
+        {
+            load ? <LoaderContainer>
+            <h1>Updating record</h1> 
+            <Circles color={'#FF00FF'} />
+            </LoaderContainer> 
+            :
+            <Container>
             {
                 recordControl ? <h1>Editar saída</h1> : <h1>Editar entrada</h1>
             }
@@ -61,5 +113,7 @@ export default function EditRegister(){
                 </button>
             </form>
         </Container>
+        }
+        </>
     );
 }

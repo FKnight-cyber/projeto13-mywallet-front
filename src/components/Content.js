@@ -3,9 +3,38 @@ import dayjs from 'dayjs'
 import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import UserContext from '../contexts/UserContext';
+import { useContext } from 'react';
+import { toast } from "react-toastify";
+import swal from 'sweetalert';
 
-export default function Content({records,token,setRecords,setBalance,setRecordControl}){
+const notify = (error)=>{
+    toast(`❗ ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
+
+const notify2 = (msg)=>{
+    toast(`✅ ${msg}`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
+
+export default function Content({records,setRecords,setLoad}){
     const navigate = useNavigate();
+    const {token, setRecordControl, setBalance} = useContext(UserContext);
 
     function goToEditPage(price,index){
         if(price < 0){
@@ -17,23 +46,38 @@ export default function Content({records,token,setRecords,setBalance,setRecordCo
     }
 
     function removeRecord(index){
-        if(window.confirm('Are you sure to delete this record?')){
-            const promise = axios.delete(`http://localhost:5000/initialpage/${index}`,{
-                headers:{
-                    Authorization:`Bearer ${token}`
-                }
-            });
-
-            promise.then(res =>{
-                setBalance(res.data.balance)
-                setRecords([...res.data.records]);
-                alert("Record sucessfully removed!");
-            });
-
-            promise.catch( Error =>{
-                alert(Error.response.data);
-            });
-        }
+        swal({
+            title: "Are you sure to delete this record 🤔?",
+            text: "Once deleted, you will not be able to recover it!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                setLoad(true);
+                const promise = axios.delete(`http://localhost:5000/initialpage/${index}`,{
+                    headers:{
+                        Authorization:`Bearer ${token}`
+                    }
+                });
+    
+                promise.then(res =>{
+                    setBalance(res.data.balance)
+                    setRecords([...res.data.records]);
+                    notify2("Record sucessfully removed!");
+                    setLoad(false);
+                });
+    
+                promise.catch( Error =>{
+                    notify(Error.response.data.message);
+                    setLoad(false);
+                });
+        } else {
+              swal("Your record is safe!");
+            }
+          });
+    
         return;
     }
 

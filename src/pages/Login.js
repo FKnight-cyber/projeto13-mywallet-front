@@ -1,17 +1,34 @@
+import React from 'react';
 import styled from "styled-components";
 import { Link,useNavigate } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
 import { useState,useContext } from "react";
 import UserContext from "../contexts/UserContext";
+import Loader from "../components/loader";
+import { ToastContainer, toast } from "react-toastify";
+
+const notify = (error)=>{
+    toast(`❗ ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
 
 export default function Login(){
     const { setUser,setToken } = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [load,setLoad] = useState(false);
 
     const navigate = useNavigate();
     function signIn(event){
         event.preventDefault();
+        setLoad(true);
         const promise = axios.post("http://localhost:5000/", {
             headers:{
                 user: email,
@@ -23,16 +40,30 @@ export default function Login(){
             if(res.data.hasRegister){
                 setUser(res.data.user);
                 setToken(res.data.token);
+                setLoad(false);
                 navigate('/initialpage');
             }
         });
 
         promise.catch(Error => {
-            alert(Error.response.data);
+            notify(Error.response.data);
+            setLoad(false);
         });
     }
     return(
-        <Container>
+        <Container load={load}>
+           <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={true}
+                limit={1}
+            />
             <h1>My Wallet</h1>
             <form onSubmit={signIn}>
                 <input type="email" 
@@ -45,7 +76,11 @@ export default function Login(){
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)} />
-                <button type="submit">Entrar</button>
+                <button type="submit" disabled={load} >
+                    {
+                        load ? <Loader /> : 'Entrar'
+                    }
+                </button>
             </form>
             <Link to="/register" style={{textDecoration:'none'}}>
                 <h3>Primeira vez? cadastre-se!</h3>
@@ -93,13 +128,22 @@ const Container = styled.div`
         }
 
         button{
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             height: 46px;
             font-size: 20px;
-            background-color: #A328D6;
+            background-color: ${props => props.load ? '#AA336A' : '#A328D6'};
             color: #FFFFFF;
             border: none;
             border-radius: 6px;
+
+            > * {
+                &:first-child{
+                    transform: translateY(${props => props.load ? '1rem' : '0'});
+                }
+            }
         }
     }
 

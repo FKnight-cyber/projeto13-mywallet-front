@@ -7,6 +7,7 @@ import Register from "../pages/Register";
 import InitialPage from "../pages/InitialPage";
 import AddRegister from "../pages/AddRegister";
 import EditRegister from "../pages/EditRegister";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
   const [user, setUser] = useState();

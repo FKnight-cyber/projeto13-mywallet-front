@@ -5,10 +5,25 @@ import { useContext,useState,useEffect } from "react";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
 import Content from "../components/Content";
+import { Rings } from  'react-loader-spinner'
+import { ToastContainer, toast } from "react-toastify";
+
+const notify = (error)=>{
+    toast(`❗ ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
 
 export default function InitialPage(){
-    const { user,setUser,token,balance,setBalance,setRecordControl } = useContext(UserContext);
+    const { user,setUser,token,setToken,balance,setBalance,setRecordControl } = useContext(UserContext);
     const [records, setRecords] = useState([]);
+    const [load,setLoad] = useState(false);
     const navigate = useNavigate();
 
     useEffect(()=>{
@@ -20,23 +35,38 @@ export default function InitialPage(){
     });
 
     promise.then(res => {
-        setBalance(res.data.balance)
+        setBalance(res.data.balance);
         setRecords([...res.data.records]);
+        setLoad(false);
     })
 
     promise.catch(Error => {
-        alert(Error.response.data);
+        notify(Error.response.data.message);
+        setLoad(false);
     })
 
     },[balance,setBalance,token]);
 
     function logOut(){
         setUser();
+        setToken();
         navigate('/');
     }
 
     return(
         <Container>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={true}
+                limit={1}
+            />
             <header>
                 <h1>Olá, {user}</h1>
                 <IoExitOutline size={40} color={'#ffffff'} onClick={logOut} />
@@ -46,7 +76,7 @@ export default function InitialPage(){
                     {
                         records.length === 0 ? <h2>Não há registros de entrada ou saída!</h2>
                         :
-                        <Content setRecordControl={setRecordControl} setBalance={setBalance} records={records} token={token} setRecords={setRecords}></Content>
+                        <Content setLoad={setLoad} records={records} setRecords={setRecords}></Content>
                     }
                 </div>
                 {
@@ -57,6 +87,11 @@ export default function InitialPage(){
                         <h5>{balance}</h5>
                     </div>
                 }
+                    <LoaderContainer>
+                        {
+                            load ? <Rings color={'#FF00FF'} /> : ''
+                        }      
+                    </LoaderContainer>
             </Contents>
             <Section>
                 <div>
@@ -116,6 +151,7 @@ const Contents = styled.div`
     background-color: #ffffff;
     margin-top:22px;
     width: 100%;
+    position: relative;
 
     h2{
         width: 180px;
@@ -138,7 +174,7 @@ const Contents = styled.div`
     }
 
     > * {
-      &:last-child {
+      &:nth-child(2) {
          display: flex;
          width: 100%;
          justify-content: space-between;
@@ -184,4 +220,12 @@ const Section = styled.div`
             height: 40px;
         }
     }
+`
+
+const LoaderContainer = styled.div`
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -25px 0 0 -25px;
 `

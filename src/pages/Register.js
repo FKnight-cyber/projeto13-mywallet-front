@@ -2,20 +2,38 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
+import Loader from "../components/loader";
+import { ToastContainer, toast } from "react-toastify";
+
+const notify = (error)=>{
+    toast(`❗ ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
 
 export default function Register(){
     const [name, setName] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
+    const [load,setLoad] = useState(false);
 
     const navigate = useNavigate();
 
     function registerAccount(event){
         event.preventDefault();
 
+        setLoad(true);
+
         if(confirmPassword !== password){
-            return alert("Could not register! check your password and its confirmation!");
+            setLoad(false);
+            return notify('Could not register! check your password and its confirmation!');
         }
 
         const body = {
@@ -28,16 +46,30 @@ export default function Register(){
 
         promise.then(() => {
             alert("Successfully registered!");
+            setLoad(false);
             navigate("/"); 
         })
 
         promise.catch(Error =>{
-            alert(Error.response.data);
+            notify(Error.response.data.message);
+            setLoad(false);
         })
     }
 
     return(
-        <Container>
+        <Container load={load}>
+             <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={true}
+                limit={1}
+            />
             <h1>My Wallet</h1>
             <form onSubmit={registerAccount}>
                 <input type="text" 
@@ -61,7 +93,11 @@ export default function Register(){
                 required
                 value={confirmPassword}
                 onChange={e => setConfirmPassword(e.target.value)}/>
-                <button type="submit">Cadastrar</button>
+                 <button type="submit" disabled={load} >
+                    {
+                        load ? <Loader /> : 'Cadastrar'
+                    }
+                </button>
             </form>
             <Link to="/" style={{textDecoration:'none'}}>
                 <h3>Já tem uma conta? entre agora!</h3>
@@ -109,13 +145,22 @@ const Container = styled.div`
         }
 
         button{
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             height: 46px;
             font-size: 20px;
-            background-color: #A328D6;
+            background-color: ${props => props.load ? '#AA336A' : '#A328D6'};
             color: #FFFFFF;
             border: none;
             border-radius: 6px;
+
+            > * {
+                &:first-child{
+                    transform: translateY(${props => props.load ? '1rem' : '0'});
+                }
+            }
         }
     }
 
