@@ -54,7 +54,7 @@ export default function Register(){
             password
         }
 
-        const promise = axios.post("http://http://ryan-projeto13-mywallet.herokuapp.com/register",body);
+        const promise = axios.post("https://ryan-projeto13-mywallet.herokuapp.com/register",body);
 
         promise.then(() => {
             notify2("Successfully registered!");

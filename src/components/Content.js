@@ -56,7 +56,7 @@ export default function Content({records,setRecords,setLoad}){
           .then((willDelete) => {
             if (willDelete) {
                 setLoad(true);
-                const promise = axios.delete(`http://http://ryan-projeto13-mywallet.herokuapp.com/initialpage/${index}`,{
+                const promise = axios.delete(`https://ryan-projeto13-mywallet.herokuapp.com/initialpage/${index}`,{
                     headers:{
                         Authorization:`Bearer ${token}`
                     }

@@ -29,7 +29,7 @@ export default function Login(){
     function signIn(event){
         event.preventDefault();
         setLoad(true);
-        const promise = axios.post("http://http://ryan-projeto13-mywallet.herokuapp.com/", {
+        const promise = axios.post("https://ryan-projeto13-mywallet.herokuapp.com/", {
             headers:{
                 user: email,
                 password

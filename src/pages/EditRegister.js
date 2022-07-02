@@ -51,7 +51,7 @@ export default function EditRegister(){
             description
         }
 
-        const promise = axios.put(`http://http://ryan-projeto13-mywallet.herokuapp.com/initialpage/edit/${idRegister}`, body, {
+        const promise = axios.put(`https://ryan-projeto13-mywallet.herokuapp.com/initialpage/edit/${idRegister}`, body, {
             headers:{
                 Authorization: `Bearer ${token}`
             }
