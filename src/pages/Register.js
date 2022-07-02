@@ -63,6 +63,7 @@ export default function Register(){
         })
 
         promise.catch(Error =>{
+            if(Error.response.status === 422) return notify(Error.response.data);
             notify(Error.response.data.message);
             setLoad(false);
         })
