@@ -17,6 +17,18 @@ const notify = (error)=>{
         });
     }
 
+const notify2 = (msg)=>{
+    toast(`✅ ${msg}`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
+
 export default function Register(){
     const [name, setName] = useState();
     const [email, setEmail] = useState();
@@ -42,10 +54,10 @@ export default function Register(){
             password
         }
 
-        const promise = axios.post("http://localhost:5000/register",body);
+        const promise = axios.post("http://http://ryan-projeto13-mywallet.herokuapp.com/register",body);
 
         promise.then(() => {
-            alert("Successfully registered!");
+            notify2("Successfully registered!");
             setLoad(false);
             navigate("/"); 
         })

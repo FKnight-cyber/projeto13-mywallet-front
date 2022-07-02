@@ -27,7 +27,7 @@ export default function InitialPage(){
     const navigate = useNavigate();
 
     useEffect(()=>{
-        const promise = axios.get("http://localhost:5000/initialpage",
+        const promise = axios.get("http://http://ryan-projeto13-mywallet.herokuapp.com/initialpage",
         {
         headers:{
             Authorization: `Bearer ${token}`

@@ -49,7 +49,7 @@ export default function AddRegister(){
             description
         }
 
-        const promise = axios.post("http://localhost:5000/add", body, {
+        const promise = axios.post("http://ryan-projeto13-mywallet.herokuapp.com/add", body, {
             headers:{
                 Authorization: `Bearer ${token}`
             }
