@@ -6,6 +6,7 @@ import { useState,useContext } from "react";
 import UserContext from "../contexts/UserContext";
 import Loader from "../components/loader";
 import { ToastContainer, toast } from "react-toastify";
+import wallet from "../assets/wallet2.png"
 
 const notify = (error)=>{
     toast(`❗ ${error}`, {
@@ -64,6 +65,7 @@ export default function Login(){
                 pauseOnHover={true}
                 limit={1}
             />
+            <img src={wallet} alt="" />
             <h1>My Wallet</h1>
             <form onSubmit={signIn}>
                 <input type="email" 
@@ -95,8 +97,15 @@ const Container = styled.div`
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height:915px;
+    height:100vh;
     background-color: #8C11BE;
+
+    img{
+        object-fit: cover;
+        width: 100px;
+        height: 100px;
+        margin-bottom: 40px;
+    }
 
     h1{
         font-family: 'Saira Stencil One', cursive;

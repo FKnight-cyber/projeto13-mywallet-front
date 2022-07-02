@@ -124,7 +124,7 @@ const Container = styled.div`
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height:915px;
+    height:100vh;
     background-color: #8C11BE;
 
     h1{
