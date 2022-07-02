@@ -96,13 +96,13 @@ export default function InitialPage(){
             <Section>
                 <div>
                     <Link onClick={()=>setRecordControl(false)} to="/add" style={{textDecoration:'none', color:'#ffffff'}}>
-                        <IoAddCircleOutline  size={22}/>
+                        <IoAddCircleOutline  size={40}/>
                     </Link>
                     <h3>Nova entrada</h3>
                 </div>
                 <div>
                     <Link onClick={()=>setRecordControl(true)} to="/add" style={{textDecoration:'none', color:'#ffffff'}}>
-                        <IoRemoveCircleOutline size={22}/>
+                        <IoRemoveCircleOutline size={40}/>
                     </Link>
                     <h3>Nova saída</h3>
                 </div>
@@ -137,7 +137,7 @@ const Container = styled.div`
     }
 
     h3{
-        margin-top: 36px;
+        margin-top: 18px;
         font-size: 16px;
         color: #FFFFFF;
     }

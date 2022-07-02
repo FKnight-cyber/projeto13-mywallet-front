@@ -66,6 +66,10 @@ export default function EditRegister(){
         });
 
         promise.catch(Error => {
+            if(Error.response.status === 422){
+                setLoad(false);
+                return notify(Error.response.data);
+            } 
             setLoad(false);
             notify(Error.response.data.message);
         });

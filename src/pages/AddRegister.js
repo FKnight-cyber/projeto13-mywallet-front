@@ -64,6 +64,10 @@ export default function AddRegister(){
         });
 
         promise.catch(Error => {
+            if(Error.response.status === 422){
+                setLoad(false);
+                return notify(Error.response.data);
+            } 
             setLoad(false);
             notify(Error.response.data.message);
         });
@@ -180,7 +184,7 @@ export const LoaderContainer = styled.div`
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: 915px;
+    height: 100vh;
     background-color: #8C11BE;
 
     h1{

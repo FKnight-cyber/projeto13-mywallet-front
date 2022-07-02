@@ -70,6 +70,10 @@ export default function Content({records,setRecords,setLoad}){
                 });
     
                 promise.catch( Error =>{
+                    if(Error.response.status === 422){
+                        setLoad(false);
+                        return notify(Error.response.data);
+                    } 
                     notify(Error.response.data.message);
                     setLoad(false);
                 });
