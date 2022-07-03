@@ -35,7 +35,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/initialpage" element={<InitialPage />} />
           <Route path="/add" element={<AddRegister />} />
-          <Route path="/initialpage/edit/:idRegister" element={<EditRegister />} />
+          <Route path="/initialpage/edit/:index" element={<EditRegister />} />
         </Routes>
         </UserContext.Provider>
     </BrowserRouter>

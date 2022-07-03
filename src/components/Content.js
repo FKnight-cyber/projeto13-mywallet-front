@@ -55,7 +55,6 @@ export default function Content({records,setRecords,setLoad}){
           })
           .then((willDelete) => {
             if (willDelete) {
-                setLoad(true);
                 const promise = axios.delete(`https://ryan-projeto13-mywallet.herokuapp.com/initialpage/${index}`,{
                     headers:{
                         Authorization:`Bearer ${token}`
@@ -77,7 +76,7 @@ export default function Content({records,setRecords,setLoad}){
                     notify(Error.response.data.message);
                     setLoad(false);
                 });
-        } else {
+        } else{
               swal("Your record is safe!");
             }
           });

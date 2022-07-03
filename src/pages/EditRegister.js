@@ -38,7 +38,7 @@ export default function EditRegister(){
 
     const navigate = useNavigate();
 
-    const {idRegister} = useParams();
+    const {index} = useParams();
 
     function updateRecord(event){
         event.preventDefault();
@@ -51,7 +51,7 @@ export default function EditRegister(){
             description
         }
 
-        const promise = axios.put(`https://ryan-projeto13-mywallet.herokuapp.com/initialpage/edit/${idRegister}`, body, {
+        const promise = axios.put(`https://ryan-projeto13-mywallet.herokuapp.com/initialpage/edit/${index}`, body, {
             headers:{
                 Authorization: `Bearer ${token}`
             }
@@ -62,7 +62,7 @@ export default function EditRegister(){
             setLoad(false);
             setTimeout(()=>{
                 navigate("/initialpage");
-            },2000);
+            },1000);
         });
 
         promise.catch(Error => {
